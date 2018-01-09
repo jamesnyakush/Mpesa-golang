@@ -8,33 +8,44 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
+)
+
+// Env is the environment type
+type Env string
+
+const (
+	// DEV is the development env tag
+	DEV Env = "dev"
+	// PRODUCTION is the production env tag
+	PRODUCTION Env = "production"
 )
 
 // Mpesa is mpesa
 type Mpesa struct {
 	AppKey    string
 	AppSecret string
+	Env       Env
 }
 
 // New return a new Mpesa
-func New(appKey, appSecret string) (Mpesa, error) {
-	return Mpesa{appKey, appSecret}, nil
+func New(appKey, appSecret string, env Env) (Mpesa, error) {
+	return Mpesa{appKey, appSecret, env}, nil
 }
 
 func (mpesa Mpesa) authenticate() (string, error) {
-	appKeySecret := mpesa.AppKey + ":" + mpesa.AppSecret
-	bytes := []byte(appKeySecret)
-
+	bytes := []byte(mpesa.AppKey + ":" + mpesa.AppSecret)
 	encoded := base64.StdEncoding.EncodeToString(bytes)
 
-	client := &http.Client{}
-	request, err := http.NewRequest(http.MethodGet, "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", strings.NewReader(encoded))
+	url := mpesa.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
+	request, err := http.NewRequest(http.MethodGet, url, strings.NewReader(encoded))
 	if err != nil {
 		return "", err
 	}
 	request.Header.Add("authorization", "Basic "+encoded)
 	request.Header.Add("cache-control", "no-cache")
 
+	client := &http.Client{Timeout: 10 * time.Second}
 	response, err := client.Do(request)
 	if err != nil {
 		return "", err
@@ -68,7 +79,7 @@ func (mpesa Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/safaricom/c2b/v1/simulate"
+	url := mpesa.baseURL() + "safaricom/c2b/v1/simulate"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -92,7 +103,7 @@ func (mpesa Mpesa) B2CRequest(b2c B2C) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"
+	url := mpesa.baseURL() + "mpesa/b2c/v1/paymentrequest"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -115,7 +126,7 @@ func (mpesa Mpesa) B2BRequest(b2b B2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/safaricom/b2b/v1/paymentrequest"
+	url := mpesa.baseURL() + "safaricom/b2b/v1/paymentrequest"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -138,7 +149,7 @@ func (mpesa Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+	url := mpesa.baseURL() + "mpesa/stkpush/v1/processrequest"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -161,7 +172,7 @@ func (mpesa Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	headers["content-type"] = "application/json"
 	headers["authorization"] = "Bearer " + auth
 
-	url := "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query"
+	url := mpesa.baseURL() + "mpesa/stkpushquery/v1/query"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -185,7 +196,7 @@ func (mpesa Mpesa) Reversal(reversal Reversal) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/safaricom/reversal/v1/request"
+	url := mpesa.baseURL() + "safaricom/reversal/v1/request"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -205,7 +216,7 @@ func (mpesa Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error)
 	headers["cache-control"] = "no-cache"
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
-	url := "https://sandbox.safaricom.co.ke/safaricom/accountbalance/v1/query"
+	url := mpesa.baseURL() + "safaricom/accountbalance/v1/query"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -229,7 +240,7 @@ func (mpesa Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := "https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl"
+	url := mpesa.baseURL() + "mpesa/c2b/v1/registerurl"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
@@ -244,7 +255,7 @@ func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]
 		request.Header.Set(key, value)
 	}
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 	response, err := client.Do(request)
 	if err != nil {
 		return "", err
@@ -258,4 +269,12 @@ func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]
 
 	log.Println("Response received")
 	return string(respBody), nil
+}
+
+func (mpesa Mpesa) baseURL() string {
+	if mpesa.Env == PRODUCTION {
+		// check if this is accurate
+		return "https://api.safaricom.co.ke/"
+	}
+	return "https://sandbox.safaricom.co.ke/"
 }
