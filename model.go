@@ -34,7 +34,7 @@ type B2B struct {
 	CommandID              string
 	SenderIdentifierType   string
 	ReceiverIdentifierType string
-	Amount                 string
+	Amount                 float32
 	PartyA                 string
 	PartyB                 string
 	Remarks                string
@@ -57,6 +57,7 @@ type STKPush struct {
 	AccountReference  string
 	QueueTimeOutURL   string
 	TransactionDesc   string
+	CheckOutRequestID string
 }
 
 // Reversal is a model
