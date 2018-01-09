@@ -1,5 +1,10 @@
 package mpesa
 
+type authResponse struct {
+	AccessToken string `json:"access_token"`
+}
+
+// C2B is a model
 type C2B struct {
 	ShortCode     string
 	CommandID     string
@@ -8,6 +13,7 @@ type C2B struct {
 	BillRefNumber string
 }
 
+// B2C is a model
 type B2C struct {
 	InitiatorName      string
 	SecurityCredential string
@@ -21,6 +27,7 @@ type B2C struct {
 	Occassion          string
 }
 
+// B2B is a model
 type B2B struct {
 	Initiator              string
 	SecurityCredential     string
@@ -36,6 +43,7 @@ type B2B struct {
 	ResultURL              string
 }
 
+// STKPush is a model
 type STKPush struct {
 	BusinessShortCode string
 	Password          string
@@ -49,4 +57,39 @@ type STKPush struct {
 	AccountReference  string
 	QueueTimeOutURL   string
 	TransactionDesc   string
+}
+
+// Reversal is a model
+type Reversal struct {
+	Initiator              string
+	SecurityCredential     string
+	CommandID              string
+	TransactionID          string
+	Amount                 string
+	ReceiverParty          string
+	ReceiverIdentifierType string
+	QueueTimeOutURL        string
+	ResultURL              string
+	Remarks                string
+	Occassion              string
+}
+
+// BalanceInquiry is a model
+type BalanceInquiry struct {
+	Initiator          string
+	SecurityCredential string
+	CommandID          string
+	PartyA             string
+	IdentifierType     string
+	Remarks            string
+	QueueTimeOutURL    string
+	ResultURL          string
+}
+
+// RegisterURL is a model
+type RegisterURL struct {
+	ShortCode       string
+	ResponseType    string
+	ConfirmationURL string
+	ValidationURL   string
 }
