@@ -20,3 +20,5 @@ const (
 	appSecret = "YOUR_APP_SECRET"	   
 )
 ```
+
+**This documentation is being updated**
