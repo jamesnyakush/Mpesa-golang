@@ -1,5 +1,14 @@
 package main
 
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
 func main() {
-	// mpesa.New()
+	// mpesa, err := mpesa.New(appKey, appSecret)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
 }

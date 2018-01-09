@@ -17,8 +17,8 @@ type Mpesa struct {
 }
 
 // New return a new Mpesa
-func New(appKey, appSecret string) (*Mpesa, error) {
-	return &Mpesa{appKey, appSecret}, nil
+func New(appKey, appSecret string) (Mpesa, error) {
+	return Mpesa{appKey, appSecret}, nil
 }
 
 func (mpesa Mpesa) authenticate() (string, error) {
