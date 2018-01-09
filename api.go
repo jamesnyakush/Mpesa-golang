@@ -147,5 +147,6 @@ func (mpesa Mpesa) newStringRequest(url string, body []byte, noCache bool) (stri
 		return "", err
 	}
 
+	log.Println("Response received")
 	return string(respBody), nil
 }
