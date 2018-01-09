@@ -12,7 +12,7 @@ go get github.com/AndroidStudyOpenSource/mpesa-api-go
 ```
 
 ## Usage
-The package needs to be configured with your appKey and appSecret which can be obtained from Safaricom.
+The package needs to be configured with your **appKey** and **appSecret** which can be obtained from Safaricom.
 
 ```
 const (
