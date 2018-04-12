@@ -1,4 +1,4 @@
-# Unofficial Safaricom MPESA Golang API Wrapper
+# MPESA Golang API Wrapper
 
 The wrapper provides convenient access to the [Safaricom MPESA G2 API](https://developer.safaricom.co.ke/apis) from applications written in server-side Golang. 
 
@@ -8,7 +8,7 @@ The wrapper provides convenient access to the [Safaricom MPESA G2 API](https://d
 You can install the package by running:
 
 ```
-go get github.com/AndroidStudyOpenSource/mpesa-api-go
+go get github.com/safaricom/mpesa-api-go
 ```
 
 ## Usage
