@@ -1,4 +1,4 @@
-# MPESA Golang API Wrapper
+# MPESA Golang API Wrapper  [![CircleCI](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go.svg?style=shield)](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go)
 
 The wrapper provides convenient access to the [Safaricom MPESA G2 API](https://developer.safaricom.co.ke/apis) from applications written in server-side Golang. 
 
