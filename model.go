@@ -6,11 +6,17 @@ type authResponse struct {
 
 // C2B is a model
 type C2B struct {
-	ShortCode     string
-	CommandID     string
-	Amount        string
-	Msisdn        string
-	BillRefNumber string
+	BusinessShortCode string
+	Password          string
+	Timestamp         string
+	TransactionType   string
+	Amount            string
+	PartyA            string
+	PartyB            string
+	PhoneNumber       string
+	CallBackURL       string
+	AccountReference  string
+	TransactionDesc   string
 }
 
 // B2C is a model
