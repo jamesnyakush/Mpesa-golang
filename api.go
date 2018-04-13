@@ -79,7 +79,7 @@ func (mpesa Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "safaricom/c2b/v1/simulate"
+	url := mpesa.baseURL() + "mpesa/c2b/v1/simulate"
 	return mpesa.newStringRequest(url, body, headers)
 }
 
