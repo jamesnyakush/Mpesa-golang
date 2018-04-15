@@ -14,7 +14,7 @@ func main() {
 	// These examples are taken from the mpesa-java-sdk examples
 	// at https://github.com/safaricom/mpesa-java-sdk
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.DEV)
+	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
 	if err != nil {
 		panic(err)
 	}
