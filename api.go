@@ -79,7 +79,7 @@ func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := m.baseURL() + "m/c2b/v1/simulate"
+	url := m.baseURL() + "mpesa/c2b/v1/simulate"
 	return m.newStringRequest(url, body, headers)
 }
 
@@ -103,7 +103,7 @@ func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := m.baseURL() + "m/b2c/v1/paymentrequest"
+	url := m.baseURL() + "mpesa/b2c/v1/paymentrequest"
 	return m.newStringRequest(url, body, headers)
 }
 
@@ -149,7 +149,7 @@ func (m Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := m.baseURL() + "m/stkpush/v1/processrequest"
+	url := m.baseURL() + "mpesa/stkpush/v1/processrequest"
 	return m.newStringRequest(url, body, headers)
 }
 
@@ -172,7 +172,7 @@ func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	headers["content-type"] = "application/json"
 	headers["authorization"] = "Bearer " + auth
 
-	url := m.baseURL() + "m/stkpushquery/v1/query"
+	url := m.baseURL() + "mpesa/stkpushquery/v1/query"
 	return m.newStringRequest(url, body, headers)
 }
 
@@ -240,7 +240,7 @@ func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := m.baseURL() + "m/c2b/v1/registerurl"
+	url := m.baseURL() + "mpesa/c2b/v1/registerurl"
 	return m.newStringRequest(url, body, headers)
 }
 
