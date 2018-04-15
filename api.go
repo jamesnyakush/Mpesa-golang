@@ -271,11 +271,8 @@ func (m Mpesa) newStringRequest(url string, body []byte, headers map[string]stri
 }
 
 func (m Mpesa) baseURL() string {
-	switch m.Env {
-	case PRODUCTION:
+	if m.Env == PRODUCTION {
 		return "https://api.safaricom.co.ke/"
-	case SANDBOX:
-		return "https://sandbox.safaricom.co.ke/"
 	}
-	return ""
+	return "https://sandbox.safaricom.co.ke/"
 }
