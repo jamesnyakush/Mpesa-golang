@@ -23,9 +23,9 @@ const (
 
 // Mpesa is mpesa
 type Mpesa struct {
-	AppKey    string
-	AppSecret string
-	Env       Env
+	ConsumerKey    string
+	ConsumerSecret string
+	Env            Env
 }
 
 // New return a new Mpesa
@@ -34,7 +34,7 @@ func New(appKey, appSecret string, env Env) (Mpesa, error) {
 }
 
 func (mpesa Mpesa) authenticate() (string, error) {
-	bytes := []byte(mpesa.AppKey + ":" + mpesa.AppSecret)
+	bytes := []byte(mpesa.ConsumerKey + ":" + mpesa.ConsumerSecret)
 	encoded := base64.StdEncoding.EncodeToString(bytes)
 
 	url := mpesa.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
@@ -245,7 +245,6 @@ func (mpesa Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 }
 
 func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]string) (string, error) {
-
 	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
 		return "", nil
