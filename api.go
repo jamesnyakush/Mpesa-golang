@@ -236,9 +236,9 @@ func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
-	headers["cache-control"] = "no-cache"
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
+	headers["Cache-Control"] = "no-cache"
 
 	url := m.baseURL() + "mpesa/c2b/v1/registerurl"
 	return m.newStringRequest(url, body, headers)
