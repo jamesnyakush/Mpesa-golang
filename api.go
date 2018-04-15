@@ -273,7 +273,6 @@ func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]
 
 func (mpesa Mpesa) baseURL() string {
 	if mpesa.Env == PRODUCTION {
-		// check if this is accurate
 		return "https://api.safaricom.co.ke/"
 	}
 	return "https://sandbox.safaricom.co.ke/"
