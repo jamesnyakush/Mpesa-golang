@@ -16,28 +16,28 @@ type Env string
 
 const (
 	// DEV is the development env tag
-	DEV Env = "dev"
+	SANDBOX = iota
 	// PRODUCTION is the production env tag
-	PRODUCTION Env = "production"
+	PRODUCTION
 )
 
 // Mpesa is mpesa
 type Mpesa struct {
-	AppKey    string
-	AppSecret string
-	Env       Env
+	ConsumerKey    string
+	ConsumerSecret string
+	Env            int
 }
 
 // New return a new Mpesa
-func New(appKey, appSecret string, env Env) (Mpesa, error) {
+func New(appKey, appSecret string, env int) (Mpesa, error) {
 	return Mpesa{appKey, appSecret, env}, nil
 }
 
-func (mpesa Mpesa) authenticate() (string, error) {
-	bytes := []byte(mpesa.AppKey + ":" + mpesa.AppSecret)
-	encoded := base64.StdEncoding.EncodeToString(bytes)
+func (m Mpesa) authenticate() (string, error) {
+	b := []byte(m.ConsumerKey + ":" + m.ConsumerSecret)
+	encoded := base64.StdEncoding.EncodeToString(b)
 
-	url := mpesa.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
+	url := m.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
 	request, err := http.NewRequest(http.MethodGet, url, strings.NewReader(encoded))
 	if err != nil {
 		return "", err
@@ -61,7 +61,7 @@ func (mpesa Mpesa) authenticate() (string, error) {
 }
 
 // C2BSimulation sends a new request
-func (mpesa Mpesa) C2BSimulation(c2b C2B) (string, error) {
+func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	var c2bs []C2B
 	c2bs = append(c2bs, c2b)
 	body, err := json.Marshal(c2bs)
@@ -69,7 +69,7 @@ func (mpesa Mpesa) C2BSimulation(c2b C2B) (string, error) {
 		return "", err
 	}
 
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -79,12 +79,12 @@ func (mpesa Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "mpesa/c2b/v1/simulate"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "mpesa/c2b/v1/simulate"
+	return m.newStringRequest(url, body, headers)
 }
 
 // B2CRequest sends a new request
-func (mpesa Mpesa) B2CRequest(b2c B2C) (string, error) {
+func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 	var b2cs []B2C
 	b2cs = append(b2cs, b2c)
 
@@ -93,7 +93,7 @@ func (mpesa Mpesa) B2CRequest(b2c B2C) (string, error) {
 		return "", err
 	}
 
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -103,12 +103,12 @@ func (mpesa Mpesa) B2CRequest(b2c B2C) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "mpesa/b2c/v1/paymentrequest"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "mpesa/b2c/v1/paymentrequest"
+	return m.newStringRequest(url, body, headers)
 }
 
 // B2BRequest sends a new request
-func (mpesa Mpesa) B2BRequest(b2b B2B) (string, error) {
+func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
 	var b2bs []B2B
 	b2bs = append(b2bs, b2b)
 
@@ -116,7 +116,7 @@ func (mpesa Mpesa) B2BRequest(b2b B2B) (string, error) {
 	if err != nil {
 		return "", nil
 	}
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -126,12 +126,12 @@ func (mpesa Mpesa) B2BRequest(b2b B2B) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "safaricom/b2b/v1/paymentrequest"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "safaricom/b2b/v1/paymentrequest"
+	return m.newStringRequest(url, body, headers)
 }
 
 // STKPushSimulation sends an STK push?
-func (mpesa Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
+func (m Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
 	var stkPushes []STKPush
 	stkPushes = append(stkPushes, stkPush)
 
@@ -139,7 +139,7 @@ func (mpesa Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
 	if err != nil {
 		return "", nil
 	}
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -149,12 +149,12 @@ func (mpesa Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "mpesa/stkpush/v1/processrequest"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "mpesa/stkpush/v1/processrequest"
+	return m.newStringRequest(url, body, headers)
 }
 
 // STKPushTransactionStatus gets a status
-func (mpesa Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
+func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	var stkPushes []STKPush
 	stkPushes = append(stkPushes, stkPush)
 
@@ -163,7 +163,7 @@ func (mpesa Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 		return "", nil
 	}
 
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -172,12 +172,12 @@ func (mpesa Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	headers["content-type"] = "application/json"
 	headers["authorization"] = "Bearer " + auth
 
-	url := mpesa.baseURL() + "mpesa/stkpushquery/v1/query"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "mpesa/stkpushquery/v1/query"
+	return m.newStringRequest(url, body, headers)
 }
 
 // Reversal requests a reversal?
-func (mpesa Mpesa) Reversal(reversal Reversal) (string, error) {
+func (m Mpesa) Reversal(reversal Reversal) (string, error) {
 	var reversals []Reversal
 	reversals = append(reversals, reversal)
 
@@ -186,7 +186,7 @@ func (mpesa Mpesa) Reversal(reversal Reversal) (string, error) {
 		return "", err
 	}
 
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
@@ -196,12 +196,12 @@ func (mpesa Mpesa) Reversal(reversal Reversal) (string, error) {
 	headers["authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := mpesa.baseURL() + "safaricom/reversal/v1/request"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "safaricom/reversal/v1/request"
+	return m.newStringRequest(url, body, headers)
 }
 
 // BalanceInquiry sends a balance inquiry
-func (mpesa Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
+func (m Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	var inquiries []BalanceInquiry
 	inquiries = append(inquiries, balanceInquiry)
 
@@ -216,12 +216,12 @@ func (mpesa Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error)
 	headers["cache-control"] = "no-cache"
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
-	url := mpesa.baseURL() + "safaricom/accountbalance/v1/query"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "safaricom/accountbalance/v1/query"
+	return m.newStringRequest(url, body, headers)
 }
 
 // RegisterURL requests
-func (mpesa Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
+func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 	var registerURLs []RegisterURL
 	registerURLs = append(registerURLs, registerURL)
 
@@ -230,22 +230,21 @@ func (mpesa Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
 		return "", err
 	}
 
-	auth, err := mpesa.authenticate()
+	auth, err := m.authenticate()
 	if err != nil {
 		return "", nil
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
-	headers["cache-control"] = "no-cache"
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
+	headers["Cache-Control"] = "no-cache"
 
-	url := mpesa.baseURL() + "mpesa/c2b/v1/registerurl"
-	return mpesa.newStringRequest(url, body, headers)
+	url := m.baseURL() + "mpesa/c2b/v1/registerurl"
+	return m.newStringRequest(url, body, headers)
 }
 
-func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]string) (string, error) {
-
+func (m Mpesa) newStringRequest(url string, body []byte, headers map[string]string) (string, error) {
 	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
 		return "", nil
@@ -271,9 +270,8 @@ func (mpesa Mpesa) newStringRequest(url string, body []byte, headers map[string]
 	return string(respBody), nil
 }
 
-func (mpesa Mpesa) baseURL() string {
-	if mpesa.Env == PRODUCTION {
-		// check if this is accurate
+func (m Mpesa) baseURL() string {
+	if m.Env == PRODUCTION {
 		return "https://api.safaricom.co.ke/"
 	}
 	return "https://sandbox.safaricom.co.ke/"

@@ -6,17 +6,11 @@ type authResponse struct {
 
 // C2B is a model
 type C2B struct {
-	BusinessShortCode string
-	Password          string
-	Timestamp         string
-	TransactionType   string
-	Amount            string
-	PartyA            string
-	PartyB            string
-	PhoneNumber       string
-	CallBackURL       string
-	AccountReference  string
-	TransactionDesc   string
+	ShortCode     string
+	CommandID     string
+	Amount        string
+	Msisdn        string
+	BillRefNumber string
 }
 
 // B2C is a model
@@ -56,14 +50,12 @@ type STKPush struct {
 	Timestamp         string
 	TransactionType   string
 	Amount            string
-	PhoneNumber       string
 	PartyA            string
 	PartyB            string
+	PhoneNumber       string
 	CallBackURL       string
 	AccountReference  string
-	QueueTimeOutURL   string
 	TransactionDesc   string
-	CheckOutRequestID string
 }
 
 // Reversal is a model
