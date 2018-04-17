@@ -32,7 +32,7 @@ type Mpesa struct {
 func New(appKey, appSecret string, env int) (Mpesa, error) {
 	return Mpesa{appKey, appSecret, env}, nil
 }
-
+//Generate Daraja Access Token
 func (m Mpesa) authenticate() (string, error) {
 	b := []byte(m.ConsumerKey + ":" + m.ConsumerSecret)
 	encoded := base64.StdEncoding.EncodeToString(b)
