@@ -60,6 +60,76 @@ func (m Mpesa) authenticate() (string, error) {
 	return accessToken, nil
 }
 
+// STKPushSimulation sends an STK push?
+func (m Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
+	var stkPushes []STKPush
+	stkPushes = append(stkPushes, stkPush)
+
+	body, err := json.Marshal(stkPushes)
+	if err != nil {
+		return "", nil
+	}
+	auth, err := m.authenticate()
+	if err != nil {
+		return "", nil
+	}
+
+	headers := make(map[string]string)
+	headers["content-type"] = "application/json"
+	headers["authorization"] = "Bearer " + auth
+	headers["cache-control"] = "no-cache"
+
+	url := m.baseURL() + "mpesa/stkpush/v1/processrequest"
+	return m.newStringRequest(url, body, headers)
+}
+
+// STKPushTransactionStatus gets a status
+func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
+	var stkPushes []STKPush
+	stkPushes = append(stkPushes, stkPush)
+
+	body, err := json.Marshal(stkPushes)
+	if err != nil {
+		return "", nil
+	}
+
+	auth, err := m.authenticate()
+	if err != nil {
+		return "", nil
+	}
+
+	headers := make(map[string]string)
+	headers["content-type"] = "application/json"
+	headers["authorization"] = "Bearer " + auth
+
+	url := m.baseURL() + "mpesa/stkpushquery/v1/query"
+	return m.newStringRequest(url, body, headers)
+}
+
+// RegisterURL requests
+func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
+	var registerURLs []RegisterURL
+	registerURLs = append(registerURLs, registerURL)
+
+	body, err := json.Marshal(registerURLs)
+	if err != nil {
+		return "", err
+	}
+
+	auth, err := m.authenticate()
+	if err != nil {
+		return "", nil
+	}
+
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
+	headers["Cache-Control"] = "no-cache"
+
+	url := m.baseURL() + "mpesa/c2b/v1/registerurl"
+	return m.newStringRequest(url, body, headers)
+}
+
 // C2BSimulation sends a new request
 func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	var c2bs []C2B
@@ -130,52 +200,6 @@ func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
 	return m.newStringRequest(url, body, headers)
 }
 
-// STKPushSimulation sends an STK push?
-func (m Mpesa) STKPushSimulation(stkPush STKPush) (string, error) {
-	var stkPushes []STKPush
-	stkPushes = append(stkPushes, stkPush)
-
-	body, err := json.Marshal(stkPushes)
-	if err != nil {
-		return "", nil
-	}
-	auth, err := m.authenticate()
-	if err != nil {
-		return "", nil
-	}
-
-	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
-	headers["cache-control"] = "no-cache"
-
-	url := m.baseURL() + "mpesa/stkpush/v1/processrequest"
-	return m.newStringRequest(url, body, headers)
-}
-
-// STKPushTransactionStatus gets a status
-func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
-	var stkPushes []STKPush
-	stkPushes = append(stkPushes, stkPush)
-
-	body, err := json.Marshal(stkPushes)
-	if err != nil {
-		return "", nil
-	}
-
-	auth, err := m.authenticate()
-	if err != nil {
-		return "", nil
-	}
-
-	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
-
-	url := m.baseURL() + "mpesa/stkpushquery/v1/query"
-	return m.newStringRequest(url, body, headers)
-}
-
 // Reversal requests a reversal?
 func (m Mpesa) Reversal(reversal Reversal) (string, error) {
 	var reversals []Reversal
@@ -217,30 +241,6 @@ func (m Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
 	url := m.baseURL() + "safaricom/accountbalance/v1/query"
-	return m.newStringRequest(url, body, headers)
-}
-
-// RegisterURL requests
-func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
-	var registerURLs []RegisterURL
-	registerURLs = append(registerURLs, registerURL)
-
-	body, err := json.Marshal(registerURLs)
-	if err != nil {
-		return "", err
-	}
-
-	auth, err := m.authenticate()
-	if err != nil {
-		return "", nil
-	}
-
-	headers := make(map[string]string)
-	headers["Content-Type"] = "application/json"
-	headers["Authorization"] = "Bearer " + auth
-	headers["Cache-Control"] = "no-cache"
-
-	url := m.baseURL() + "mpesa/c2b/v1/registerurl"
 	return m.newStringRequest(url, body, headers)
 }
 
