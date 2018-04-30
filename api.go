@@ -32,6 +32,7 @@ type Mpesa struct {
 func New(appKey, appSecret string, env int) (Mpesa, error) {
 	return Mpesa{appKey, appSecret, env}, nil
 }
+
 //Generate Daraja Access Token
 func (m Mpesa) authenticate() (string, error) {
 	b := []byte(m.ConsumerKey + ":" + m.ConsumerSecret)
@@ -229,6 +230,11 @@ func (m Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	var inquiries []BalanceInquiry
 	inquiries = append(inquiries, balanceInquiry)
 
+	auth, err := m.authenticate()
+	if err != nil {
+		return "", nil
+	}
+
 	body, err := json.Marshal(inquiries)
 	if err != nil {
 		return "", err
@@ -236,7 +242,7 @@ func (m Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 
 	headers := make(map[string]string)
 	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer fwu89P2Jf6MB1A2VJoouPg0BFHFM"
+	headers["authorization"] = "Bearer" + auth
 	headers["cache-control"] = "no-cache"
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
