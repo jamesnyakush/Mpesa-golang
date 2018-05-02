@@ -50,14 +50,12 @@ type STKPush struct {
 	Timestamp         string
 	TransactionType   string
 	Amount            string
-	PhoneNumber       string
 	PartyA            string
 	PartyB            string
+	PhoneNumber       string
 	CallBackURL       string
 	AccountReference  string
-	QueueTimeOutURL   string
 	TransactionDesc   string
-	CheckOutRequestID string
 }
 
 // Reversal is a model
