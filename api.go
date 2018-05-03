@@ -159,12 +159,12 @@ func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 	var b2cs []B2C
 	b2cs = append(b2cs, b2c)
 
-	log.Println(b2cs)
-
-	body, err := json.Marshal(b2cs)
+	body, err := json.Marshal(b2c)
 	if err != nil {
 		return "", err
 	}
+
+	log.Println(string(body))
 
 	auth, err := m.authenticate()
 	if err != nil {
