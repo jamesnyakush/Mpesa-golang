@@ -100,8 +100,8 @@ func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 
 	url := m.baseURL() + "mpesa/stkpushquery/v1/query"
 	return m.newStringRequest(url, body, headers)
@@ -146,8 +146,8 @@ func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
 	url := m.baseURL() + "mpesa/c2b/v1/simulate"
@@ -158,6 +158,8 @@ func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 	var b2cs []B2C
 	b2cs = append(b2cs, b2c)
+
+	log.Println(b2cs)
 
 	body, err := json.Marshal(b2cs)
 	if err != nil {
@@ -170,8 +172,8 @@ func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
 	url := m.baseURL() + "mpesa/b2c/v1/paymentrequest"
@@ -193,8 +195,8 @@ func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
 	url := m.baseURL() + "safaricom/b2b/v1/paymentrequest"
@@ -217,8 +219,8 @@ func (m Mpesa) Reversal(reversal Reversal) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer " + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
 	url := m.baseURL() + "safaricom/reversal/v1/request"
@@ -241,8 +243,8 @@ func (m Mpesa) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	}
 
 	headers := make(map[string]string)
-	headers["content-type"] = "application/json"
-	headers["authorization"] = "Bearer" + auth
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
