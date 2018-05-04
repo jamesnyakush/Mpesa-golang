@@ -33,8 +33,8 @@ type B2B struct {
 	SecurityCredential     string
 	CommandID              string
 	SenderIdentifierType   string
-	ReceiverIdentifierType string
-	Amount                 float32
+	RecieverIdentifierType string
+	Amount                 string
 	PartyA                 string
 	PartyB                 string
 	Remarks                string
