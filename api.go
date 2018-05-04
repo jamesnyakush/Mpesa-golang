@@ -18,7 +18,7 @@ const (
 	// DEV is the development env tag
 	SANDBOX = iota
 	// PRODUCTION is the production env tag
-	PRODUCTION
+	PRODUCTION 
 )
 
 // Mpesa is mpesa
@@ -89,7 +89,7 @@ func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	var stkPushes []STKPush
 	stkPushes = append(stkPushes, stkPush)
 
-	body, err := json.Marshal(stkPushes)
+	body, err := json.Marshal(stkPush)
 	if err != nil {
 		return "", nil
 	}
@@ -185,7 +185,7 @@ func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
 	var b2bs []B2B
 	b2bs = append(b2bs, b2b)
 
-	body, err := json.Marshal(b2bs)
+	body, err := json.Marshal(b2b)
 	if err != nil {
 		return "", nil
 	}
