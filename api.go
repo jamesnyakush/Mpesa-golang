@@ -18,7 +18,7 @@ const (
 	// DEV is the development env tag
 	SANDBOX = iota
 	// PRODUCTION is the production env tag
-	PRODUCTION 
+	PRODUCTION
 )
 
 // Mpesa is mpesa
@@ -156,9 +156,6 @@ func (m Mpesa) C2BSimulation(c2b C2B) (string, error) {
 
 // B2CRequest sends a new request
 func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
-	var b2cs []B2C
-	b2cs = append(b2cs, b2c)
-
 	body, err := json.Marshal(b2c)
 	if err != nil {
 		return "", err
@@ -182,9 +179,6 @@ func (m Mpesa) B2CRequest(b2c B2C) (string, error) {
 
 // B2BRequest sends a new request
 func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
-	var b2bs []B2B
-	b2bs = append(b2bs, b2b)
-
 	body, err := json.Marshal(b2b)
 	if err != nil {
 		return "", nil
@@ -199,7 +193,7 @@ func (m Mpesa) B2BRequest(b2b B2B) (string, error) {
 	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := m.baseURL() + "safaricom/b2b/v1/paymentrequest"
+	url := m.baseURL() + "mpesa/b2b/v1/paymentrequest"
 	return m.newStringRequest(url, body, headers)
 }
 
