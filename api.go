@@ -18,7 +18,7 @@ const (
 	// DEV is the development env tag
 	SANDBOX = iota
 	// PRODUCTION is the production env tag
-	PRODUCTION 
+	PRODUCTION
 )
 
 // Mpesa is mpesa
@@ -102,8 +102,8 @@ func (m Mpesa) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 }
 
 // RegisterURL requests
-func (m Mpesa) RegisterURL(registerURL RegisterURL) (string, error) {
-	body, err := json.Marshal(registerURL)
+func (m Mpesa) C2BRegisterURL(c2BRegisterURL C2BRegisterURL) (string, error) {
+	body, err := json.Marshal(c2BRegisterURL)
 	if err != nil {
 		return "", err
 	}

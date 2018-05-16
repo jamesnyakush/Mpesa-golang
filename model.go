@@ -86,7 +86,7 @@ type BalanceInquiry struct {
 }
 
 // RegisterURL is a model
-type RegisterURL struct {
+type C2BRegisterURL struct {
 	ShortCode       string
 	ResponseType    string
 	ConfirmationURL string
