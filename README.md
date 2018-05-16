@@ -29,6 +29,44 @@ This api allows you to do Lipa Na M-Pesa payment using STK Push.
 ### C2B
 This api allows you to register C2B Callback URLs to Safaricom, and also Simulate a C2B Transaction in ```Sandbox```
 
+This is a simple demo to show how to register C2B Callback URL
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.C2BRegisterURL(mpesa.C2BRegisterURL{
+		ShortCode:       "",
+		ResponseType:    "",
+		ConfirmationURL: "",
+		ValidationURL:   "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
+
 ### B2C
 This api allows you to do M-Pesa Transaction from company to client.
 
@@ -50,6 +88,7 @@ const (
 
 func main() {
 
+	//This is Production :: You can switch to mpesa.SANDBOX
 	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
 	if err != nil {
 		panic(err)
