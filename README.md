@@ -22,7 +22,49 @@ const (
 The following examples with show you how to make requests to the various api's available.
 
 ### MPESAExpress (Formerly STKPush)
-This api allows you to do Lipa Na M-Pesa payment using STK Push.
+This api allows you to do Lipa Na M-Pesa payment using STK Push. This is a simple example:
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.STKPushSimulation(mpesa.STKPush{
+		BusinessShortCode: "",
+		Password:          "",
+		Timestamp:         "",
+		TransactionType:   "",
+		Amount:            "",
+		PartyA:            "",
+		PartyB:            "",
+		PhoneNumber:       "",
+		CallBackURL:       "",
+		AccountReference:  "",
+		TransactionDesc:   "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
 
 ### C2B
 This api allows you to register C2B Callback URLs to Safaricom, and also Simulate a C2B Transaction in ```Sandbox```
