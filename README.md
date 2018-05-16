@@ -35,6 +35,50 @@ This api allows you to do M-Pesa Transaction from company to client.
 ### B2B
 This api allows you to do M-Pesa Transaction from one company to another.
 
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.B2BRequest(mpesa.B2B{
+		Initiator:              "",
+		SecurityCredential:     "",
+		CommandID:              "",
+		SenderIdentifierType:   "",
+		RecieverIdentifierType: "",
+		Remarks:                "",
+		Amount:                 "",
+		PartyA:                 "",
+		PartyB:                 "",
+		AccountReference:       "",
+		QueueTimeOutURL:        "",
+		ResultURL:              "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
+
 ### Account Balance
 This api allows you to do balance inquiry.
 
