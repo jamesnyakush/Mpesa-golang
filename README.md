@@ -238,6 +238,45 @@ func main() {
 ### Account Balance
 This api allows you to do balance inquiry.
 
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.BalanceInquiry(mpesa.BalanceInquiry{
+		Initiator:          "",
+		SecurityCredential: "",
+		CommandID:          "",
+		PartyA:             "",
+		IdentifierType:     "",
+		Remarks:            "",
+		QueueTimeOutURL:    "",
+		ResultURL:          "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
+
 ### Transaction Status
 This api allows you to check the status of transaction.
 
