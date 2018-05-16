@@ -2,8 +2,6 @@
 
 The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. :rocket:
 
-**This is Work in Progress!**
-
 ## Installing
 You can install the package by running:
 
@@ -29,7 +27,7 @@ This api allows you to do Lipa Na M-Pesa payment using STK Push.
 ### C2B
 This api allows you to register C2B Callback URLs to Safaricom, and also Simulate a C2B Transaction in ```Sandbox```
 
-This is a simple demo to show how to register C2B Callback URL
+This is a simple demo to show how to register C2B Callback URL:
 
 ```golang
 package main
@@ -46,7 +44,7 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
@@ -65,6 +63,43 @@ func main() {
 
 }
 
+```
+To simulate a C2B Request, use this simple example:
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.C2BSimulation(mpesa.C2B{
+		ShortCode:     "",
+		CommandID:     "",
+		Amount:        "",
+		Msisdn:        "",
+		BillRefNumber: "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
 ```
 
 ### B2C
@@ -88,8 +123,7 @@ const (
 
 func main() {
 
-	//This is Production :: You can switch to mpesa.SANDBOX
-	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
