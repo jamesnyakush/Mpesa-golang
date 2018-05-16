@@ -1,6 +1,6 @@
 # MPESA Golang API Wrapper  [![CircleCI](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go.svg?style=shield)](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go)
 
-The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. 
+The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. :rocket:
 
 **This is Work in Progress!**
 
@@ -24,18 +24,25 @@ const (
 The following examples with show you how to make requests to the various api's available.
 
 ### MPESAExpress (Formerly STKPush)
+This api allows you to do Lipa Na M-Pesa payment using STK Push.
 
 ### C2B
+This api allows you to register C2B Callback URLs to Safaricom, and also Simulate a C2B Transaction in ```Sandbox```
 
 ### B2C
+This api allows you to do M-Pesa Transaction from company to client.
 
 ### B2B
+This api allows you to do M-Pesa Transaction from one company to another.
 
 ### Account Balance
+This api allows you to do balance inquiry.
 
 ### Transaction Status
+This api allows you to check the status of transaction.
 
 ### Reversal
+This api allows you to do a transaction reversal
 
 ### Contributing
 
