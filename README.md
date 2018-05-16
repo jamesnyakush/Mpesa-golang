@@ -1,8 +1,6 @@
 # MPESA Golang API Wrapper  [![CircleCI](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go.svg?style=shield)](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go)
 
-The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. 
-
-**This is Work in Progress!**
+The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. :rocket:
 
 ## Installing
 You can install the package by running:
@@ -24,18 +22,308 @@ const (
 The following examples with show you how to make requests to the various api's available.
 
 ### MPESAExpress (Formerly STKPush)
+This api allows you to do Lipa Na M-Pesa payment using STK Push. This is a simple example:
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.STKPushSimulation(mpesa.STKPush{
+		BusinessShortCode: "",
+		Password:          "",
+		Timestamp:         "",
+		TransactionType:   "",
+		Amount:            "",
+		PartyA:            "",
+		PartyB:            "",
+		PhoneNumber:       "",
+		CallBackURL:       "",
+		AccountReference:  "",
+		TransactionDesc:   "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
 
 ### C2B
+This api allows you to register C2B Callback URLs to Safaricom, and also Simulate a C2B Transaction in ```Sandbox```
+
+This is a simple demo to show how to register C2B Callback URL:
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.C2BRegisterURL(mpesa.C2BRegisterURL{
+		ShortCode:       "",
+		ResponseType:    "",
+		ConfirmationURL: "",
+		ValidationURL:   "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
+To simulate a C2B Request, use this simple example:
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.C2BSimulation(mpesa.C2B{
+		ShortCode:     "",
+		CommandID:     "",
+		Amount:        "",
+		Msisdn:        "",
+		BillRefNumber: "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
 
 ### B2C
+This api allows you to do M-Pesa Transaction from company to client.
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.B2CRequest(mpesa.B2C{
+		InitiatorName:      "",
+		SecurityCredential: "",
+		CommandID:          "",
+		Amount:             "",
+		PartyA:             "",
+		PartyB:             "",
+		Remarks:            "",
+		QueueTimeOutURL:    "",
+		ResultURL:          "",
+		Occassion:          "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
 
 ### B2B
+This api allows you to do M-Pesa Transaction from one company to another.
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.B2BRequest(mpesa.B2B{
+		Initiator:              "",
+		SecurityCredential:     "",
+		CommandID:              "",
+		SenderIdentifierType:   "",
+		RecieverIdentifierType: "",
+		Remarks:                "",
+		Amount:                 "",
+		PartyA:                 "",
+		PartyB:                 "",
+		AccountReference:       "",
+		QueueTimeOutURL:        "",
+		ResultURL:              "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+
+```
 
 ### Account Balance
+This api allows you to do balance inquiry.
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.BalanceInquiry(mpesa.BalanceInquiry{
+		Initiator:          "",
+		SecurityCredential: "",
+		CommandID:          "",
+		PartyA:             "",
+		IdentifierType:     "",
+		Remarks:            "",
+		QueueTimeOutURL:    "",
+		ResultURL:          "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
 
 ### Transaction Status
+This api allows you to check the status of transaction.
 
 ### Reversal
+This api allows you to do a transaction reversal
+
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.Reversal(mpesa.Reversal{
+		Initiator:              "",
+		SecurityCredential:     "",
+		CommandID:              "",
+		TransactionID:          "",
+		Amount:                 "",
+		ReceiverParty:          "",
+		ReceiverIdentifierType: "",
+		QueueTimeOutURL:        "",
+		ResultURL:              "",
+		Remarks:                "",
+		Occassion:              "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
 
 ### Contributing
 
