@@ -21,21 +21,23 @@ const (
 )
 ```
 
-## MPESAExpress (Formerly STKPush)
+The following examples with show you how to make requests to the various api's available.
 
-## C2B
+### MPESAExpress (Formerly STKPush)
 
-## B2C
+### C2B
 
-## B2B
+### B2C
 
-## Account Balance
+### B2B
 
-## Transaction Status
+### Account Balance
 
-## Reversal
+### Transaction Status
 
-## Contributing
+### Reversal
+
+### Contributing
 
 We’re glad you’re interested in MPESA Daraja Golang SDK, and we’d love to see where you take it. If you would like to contribute code to this project you can do so through GitHub by Forking the Repository and creating a Pull Request.
 
