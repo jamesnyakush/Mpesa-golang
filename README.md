@@ -283,6 +283,48 @@ This api allows you to check the status of transaction.
 ### Reversal
 This api allows you to do a transaction reversal
 
+```golang
+package main
+
+import (
+	"log"
+	"github.com/AndroidStudyOpenSource/mpesa-api-go"
+)
+
+const (
+	appKey    = ""
+	appSecret = ""
+)
+
+func main() {
+
+	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := m.Reversal(mpesa.Reversal{
+		Initiator:              "",
+		SecurityCredential:     "",
+		CommandID:              "",
+		TransactionID:          "",
+		Amount:                 "",
+		ReceiverParty:          "",
+		ReceiverIdentifierType: "",
+		QueueTimeOutURL:        "",
+		ResultURL:              "",
+		Remarks:                "",
+		Occassion:              "",
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println(response)
+
+}
+```
+
 ### Contributing
 
 We’re glad you’re interested in MPESA Daraja Golang SDK, and we’d love to see where you take it. If you would like to contribute code to this project you can do so through GitHub by Forking the Repository and creating a Pull Request.
