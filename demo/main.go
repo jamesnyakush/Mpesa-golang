@@ -14,12 +14,12 @@ func main() {
 	// These examples are taken from the mpesa-java-sdk examples
 	// at https://github.com/safaricom/mpesa-java-sdk
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.PRODUCTION)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.B2BRequest(mpesa.B2B{})
+	response, err := svc.B2BRequest(mpesa.B2B{})
 	if err != nil {
 		log.Println(err)
 	}
@@ -31,7 +31,7 @@ func main() {
 		Amount:        "2",
 		Msisdn:        "254708374149",
 		BillRefNumber: "hkjhjkhjkh"}
-	response, err = m.C2BSimulation(c2b)
+	response, err = svc.C2BSimulation(c2b)
 	if err != nil {
 		log.Println(err)
 	}
