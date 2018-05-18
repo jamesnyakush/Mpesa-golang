@@ -24,9 +24,9 @@ const (
 
 // Service is an Mpesa Service
 type Service struct {
-	ConsumerKey    string
-	ConsumerSecret string
-	Env            int
+	AppKey    string
+	AppSecret string
+	Env       int
 }
 
 // New return a new Mpesa Service
@@ -36,7 +36,7 @@ func New(appKey, appSecret string, env int) (Service, error) {
 
 //Generate Mpesa Daraja Access Token
 func (s Service) authenticate() (string, error) {
-	b := []byte(s.ConsumerKey + ":" + s.ConsumerSecret)
+	b := []byte(s.AppKey + ":" + s.AppSecret)
 	encoded := base64.StdEncoding.EncodeToString(b)
 
 	url := s.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
