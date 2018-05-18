@@ -19,11 +19,11 @@ func main() {
 		panic(err)
 	}
 
-	response, err := svc.B2BRequest(mpesa.B2B{})
+	res, err := svc.B2BRequest(mpesa.B2B{})
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 	c2b := mpesa.C2B{
 		ShortCode:     "600576",
@@ -31,9 +31,10 @@ func main() {
 		Amount:        "2",
 		Msisdn:        "254708374149",
 		BillRefNumber: "hkjhjkhjkh"}
-	response, err = svc.C2BSimulation(c2b)
+
+	res, err = svc.C2BSimulation(c2b)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 }

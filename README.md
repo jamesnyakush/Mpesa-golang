@@ -38,12 +38,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.STKPushSimulation(mpesa.STKPush{
+	res, err := svc.STKPushSimulation(mpesa.STKPush{
 		BusinessShortCode: "",
 		Password:          "",
 		Timestamp:         "",
@@ -60,7 +60,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 
@@ -86,12 +86,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.C2BRegisterURL(mpesa.C2BRegisterURL{
+	res, err := svc.C2BRegisterURL(mpesa.C2BRegisterURL{
 		ShortCode:       "",
 		ResponseType:    "",
 		ConfirmationURL: "",
@@ -101,7 +101,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 
@@ -123,12 +123,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.C2BSimulation(mpesa.C2B{
+	res, err := svc.C2BSimulation(mpesa.C2B{
 		ShortCode:     "",
 		CommandID:     "",
 		Amount:        "",
@@ -139,7 +139,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 ```
@@ -162,12 +162,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.B2CRequest(mpesa.B2C{
+	res, err := svc.B2CRequest(mpesa.B2C{
 		InitiatorName:      "",
 		SecurityCredential: "",
 		CommandID:          "",
@@ -183,7 +183,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 ```
@@ -206,12 +206,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.B2BRequest(mpesa.B2B{
+	res, err := svc.B2BRequest(mpesa.B2B{
 		Initiator:              "",
 		SecurityCredential:     "",
 		CommandID:              "",
@@ -229,7 +229,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 
@@ -253,12 +253,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.BalanceInquiry(mpesa.BalanceInquiry{
+	res, err := svc.BalanceInquiry(mpesa.BalanceInquiry{
 		Initiator:          "",
 		SecurityCredential: "",
 		CommandID:          "",
@@ -272,7 +272,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 ```
@@ -298,12 +298,12 @@ const (
 
 func main() {
 
-	m, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
+	svc, err := mpesa.New(appKey, appSecret, mpesa.SANDBOX)
 	if err != nil {
 		panic(err)
 	}
 
-	response, err := m.Reversal(mpesa.Reversal{
+	res, err := svc.Reversal(mpesa.Reversal{
 		Initiator:              "",
 		SecurityCredential:     "",
 		CommandID:              "",
@@ -320,7 +320,7 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(response)
+	log.Println(res)
 
 }
 ```

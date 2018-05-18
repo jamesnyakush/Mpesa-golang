@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"fmt"
 )
 
 // Env is the environment type
@@ -21,7 +22,7 @@ const (
 	PRODUCTION
 )
 
-// Service is an mpesa Service
+// Service is an Mpesa Service
 type Service struct {
 	ConsumerKey    string
 	ConsumerSecret string
@@ -39,22 +40,23 @@ func (s Service) authenticate() (string, error) {
 	encoded := base64.StdEncoding.EncodeToString(b)
 
 	url := s.baseURL() + "oauth/v1/generate?grant_type=client_credentials"
-	request, err := http.NewRequest(http.MethodGet, url, strings.NewReader(encoded))
+	req, err := http.NewRequest(http.MethodGet, url, strings.NewReader(encoded))
 	if err != nil {
 		return "", err
 	}
-	request.Header.Add("authorization", "Basic "+encoded)
-	request.Header.Add("cache-control", "no-cache")
+	req.Header.Add("authorization", "Basic "+encoded)
+	req.Header.Add("cache-control", "no-cache")
 
 	client := &http.Client{Timeout: 10 * time.Second}
-	response, err := client.Do(request)
+	res, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("could not send auth request: %v", err)
 	}
 
 	var authResponse authResponse
-	json.NewDecoder(response.Body).Decode(&authResponse)
-	defer response.Body.Close()
+	defer res.Body.Close()
+	err = json.NewDecoder(res.Body).Decode(&authResponse)
+	return "", fmt.Errorf("could not decode auth response: %v", err)
 
 	accessToken := authResponse.AccessToken
 	log.Println("Received access_token: ", accessToken)
