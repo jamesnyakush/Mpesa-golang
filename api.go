@@ -17,6 +17,8 @@ type Env string
 
 const (
 	// DEV is the development env tag
+
+	// SANDBOX is the sandbox env tag
 	SANDBOX = iota
 	// PRODUCTION is the production env tag
 	PRODUCTION
@@ -107,7 +109,7 @@ func (s Service) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	return s.newStringRequest(url, body, headers)
 }
 
-// RegisterURL requests
+// C2BRegisterURL requests
 func (s Service) C2BRegisterURL(c2BRegisterURL C2BRegisterURL) (string, error) {
 	body, err := json.Marshal(c2BRegisterURL)
 	if err != nil {
