@@ -49,12 +49,14 @@ func (s Service) authenticate() (string, error) {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(req)
+	if res != nil {
+		defer res.Body.Close()
+	}
 	if err != nil {
 		return "", fmt.Errorf("could not send auth request: %v", err)
 	}
 
 	var authResponse authResponse
-	defer res.Body.Close()
 	err = json.NewDecoder(res.Body).Decode(&authResponse)
 	if err != nil {
 		return "", fmt.Errorf("could not decode auth response: %v", err)
@@ -243,11 +245,13 @@ func (s Service) newStringRequest(url string, body []byte, headers map[string]st
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(request)
+	if res != nil {
+		defer res.Body.Close()
+	}
 	if err != nil {
 		return "", err
 	}
 
-	defer res.Body.Close()
 	stringBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return "", err
