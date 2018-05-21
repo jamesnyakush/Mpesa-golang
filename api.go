@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 	"time"
-	"fmt"
 )
 
 // Env is the environment type
@@ -17,6 +17,8 @@ type Env string
 
 const (
 	// DEV is the development env tag
+
+	// SANDBOX is the sandbox env tag
 	SANDBOX = iota
 	// PRODUCTION is the production env tag
 	PRODUCTION
@@ -49,14 +51,18 @@ func (s Service) authenticate() (string, error) {
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(req)
+	if res != nil {
+		defer res.Body.Close()
+	}
 	if err != nil {
 		return "", fmt.Errorf("could not send auth request: %v", err)
 	}
 
 	var authResponse authResponse
-	defer res.Body.Close()
 	err = json.NewDecoder(res.Body).Decode(&authResponse)
-	return "", fmt.Errorf("could not decode auth response: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("could not decode auth response: %v", err)
+	}
 
 	accessToken := authResponse.AccessToken
 	log.Println("Received access_token: ", accessToken)
@@ -103,7 +109,7 @@ func (s Service) STKPushTransactionStatus(stkPush STKPush) (string, error) {
 	return s.newStringRequest(url, body, headers)
 }
 
-// RegisterURL requests
+// C2BRegisterURL requests
 func (s Service) C2BRegisterURL(c2BRegisterURL C2BRegisterURL) (string, error) {
 	body, err := json.Marshal(c2BRegisterURL)
 	if err != nil {
@@ -241,11 +247,13 @@ func (s Service) newStringRequest(url string, body []byte, headers map[string]st
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	res, err := client.Do(request)
+	if res != nil {
+		defer res.Body.Close()
+	}
 	if err != nil {
 		return "", err
 	}
 
-	defer res.Body.Close()
 	stringBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return "", err
