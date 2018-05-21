@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
 	"time"
-	"fmt"
 )
 
 // Env is the environment type
@@ -56,7 +56,9 @@ func (s Service) authenticate() (string, error) {
 	var authResponse authResponse
 	defer res.Body.Close()
 	err = json.NewDecoder(res.Body).Decode(&authResponse)
-	return "", fmt.Errorf("could not decode auth response: %v", err)
+	if err != nil {
+		return "", fmt.Errorf("could not decode auth response: %v", err)
+	}
 
 	accessToken := authResponse.AccessToken
 	log.Println("Received access_token: ", accessToken)
