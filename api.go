@@ -70,8 +70,8 @@ func (s Service) authenticate() (string, error) {
 }
 
 // STKPushSimulation sends an STK push?
-func (s Service) STKPushSimulation(stkPush STKPush) (string, error) {
-	body, err := json.Marshal(stkPush)
+func (s Service) MPESAExpressSimulation(mpesaExpress MPESAExpress) (string, error) {
+	body, err := json.Marshal(mpesaExpress)
 	if err != nil {
 		return "", nil
 	}
@@ -90,8 +90,8 @@ func (s Service) STKPushSimulation(stkPush STKPush) (string, error) {
 }
 
 // STKPushTransactionStatus gets a status
-func (s Service) STKPushTransactionStatus(stkPush STKPush) (string, error) {
-	body, err := json.Marshal(stkPush)
+func (s Service) MPESAExpressTransactionStatus(mpesaExpress MPESAExpress) (string, error) {
+	body, err := json.Marshal(mpesaExpress)
 	if err != nil {
 		return "", nil
 	}
