@@ -44,7 +44,7 @@ type B2B struct {
 }
 
 // STKPush is a model
-type STKPush struct {
+type MPESAExpress struct {
 	BusinessShortCode string
 	Password          string
 	Timestamp         string
