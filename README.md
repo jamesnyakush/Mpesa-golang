@@ -331,6 +331,9 @@ We’re glad you’re interested in MPESA Daraja Golang SDK, and we’d love to 
 
 When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible. We look forward to you submitting a Pull Request.
 
+Use [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow).
+Always tag releases to `develop` and `master`.
+
 Thanks, and please do take it for a joyride!
 
 ### License
