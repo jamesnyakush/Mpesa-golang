@@ -1,4 +1,5 @@
-# MPESA Golang API Wrapper  [![CircleCI](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go.svg?style=shield)](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go)
+# MPESA Golang API Wrapper  [![CircleCI](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go.svg?style=shield)](https://circleci.com/gh/AndroidStudyOpenSource/mpesa-api-go) [![Maintainability](https://api.codeclimate.com/v1/badges/54dcfdfde1daf230516f/maintainability)](https://codeclimate.com/github/AndroidStudyOpenSource/mpesa-api-go/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/54dcfdfde1daf230516f/test_coverage)](https://codeclimate.com/github/AndroidStudyOpenSource/mpesa-api-go/test_coverage)
+
 
 The wrapper provides convenient access to the [Safaricom MPESA Daraja API](https://developer.safaricom.co.ke/apis-explorer) for applications written in server-side Golang. :rocket:
 
