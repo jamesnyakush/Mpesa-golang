@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -65,7 +64,6 @@ func (s Service) authenticate() (string, error) {
 	}
 
 	accessToken := authResponse.AccessToken
-	log.Println("Received access_token: ", accessToken)
 	return accessToken, nil
 }
 
@@ -209,7 +207,7 @@ func (s Service) Reversal(reversal Reversal) (string, error) {
 	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := s.baseURL() + "safaricom/reversal/v1/request"
+	url := s.baseURL() + "safaricom/reversal/v1/request" //TODO :: CONFIRM THIS URL/ENDPOINT???
 	return s.newStringRequest(url, body, headers)
 }
 
@@ -259,7 +257,6 @@ func (s Service) newStringRequest(url string, body []byte, headers map[string]st
 		return "", err
 	}
 
-	log.Println("Response received")
 	return string(stringBody), nil
 }
 
