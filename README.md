@@ -44,7 +44,7 @@ func main() {
 		panic(err)
 	}
 
-	res, err := svc.STKPushSimulation(mpesa.STKPush{
+	res, err := svc.Simulation(mpesa.Express{
 		BusinessShortCode: "",
 		Password:          "",
 		Timestamp:         "",
