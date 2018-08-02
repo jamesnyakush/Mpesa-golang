@@ -43,8 +43,8 @@ type B2B struct {
 	ResultURL              string
 }
 
-// STKPush is a model
-type MPESAExpress struct {
+// Express is a model
+type Express struct {
 	BusinessShortCode string
 	Password          string
 	Timestamp         string
