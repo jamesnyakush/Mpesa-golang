@@ -24,7 +24,7 @@ The following examples with show you how to make requests to the various api's a
 
 ### MPESAExpress (Formerly STKPush)
 This api allows you to do Lipa Na M-Pesa payment using STK Push. This is a simple example:
-```golang
+```go
 package main
 
 import (
@@ -72,7 +72,7 @@ This api allows you to register C2B Callback URLs to Safaricom, and also Simulat
 
 This is a simple demo to show how to register C2B Callback URL:
 
-```golang
+```go
 package main
 
 import (
@@ -109,7 +109,7 @@ func main() {
 ```
 To simulate a C2B Request, use this simple example:
 
-```golang
+```go
 package main
 
 import (
@@ -148,7 +148,7 @@ func main() {
 ### B2C
 This api allows you to do M-Pesa Transaction from company to client.
 
-```golang
+```go
 package main
 
 import (
@@ -192,7 +192,7 @@ func main() {
 ### B2B
 This api allows you to do M-Pesa Transaction from one company to another.
 
-```golang
+```go
 package main
 
 import (
@@ -239,7 +239,7 @@ func main() {
 ### Account Balance
 This api allows you to do balance inquiry.
 
-```golang
+```go
 package main
 
 import (
@@ -284,7 +284,7 @@ This api allows you to check the status of transaction.
 ### Reversal
 This api allows you to do a transaction reversal
 
-```golang
+```go
 package main
 
 import (
