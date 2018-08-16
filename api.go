@@ -48,7 +48,7 @@ func (s Service) auth() (string, error) {
 	req.Header.Add("authorization", "Basic "+encoded)
 	req.Header.Add("cache-control", "no-cache")
 
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(req)
 	if res != nil {
 		defer res.Body.Close()
@@ -64,6 +64,7 @@ func (s Service) auth() (string, error) {
 	}
 
 	accessToken := authResponse.AccessToken
+	fmt.Println("MPESA TOKEN ", accessToken)
 	return accessToken, nil
 }
 
@@ -243,7 +244,7 @@ func (s Service) newReq(url string, body []byte, headers map[string]string) (str
 		request.Header.Set(key, value)
 	}
 
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(request)
 	if res != nil {
 		defer res.Body.Close()
