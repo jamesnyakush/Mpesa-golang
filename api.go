@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -37,7 +36,7 @@ func New(appKey, appSecret string, env int) (Service, error) {
 }
 
 //Generate Mpesa Daraja Access Token
-func (s Service) authenticate() (string, error) {
+func (s Service) auth() (string, error) {
 	b := []byte(s.AppKey + ":" + s.AppSecret)
 	encoded := base64.StdEncoding.EncodeToString(b)
 
@@ -49,7 +48,7 @@ func (s Service) authenticate() (string, error) {
 	req.Header.Add("authorization", "Basic "+encoded)
 	req.Header.Add("cache-control", "no-cache")
 
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(req)
 	if res != nil {
 		defer res.Body.Close()
@@ -65,17 +64,17 @@ func (s Service) authenticate() (string, error) {
 	}
 
 	accessToken := authResponse.AccessToken
-	log.Println("Received access_token: ", accessToken)
+	fmt.Println("MPESA TOKEN ", accessToken)
 	return accessToken, nil
 }
 
-// STKPushSimulation sends an STK push?
-func (s Service) MPESAExpressSimulation(mpesaExpress MPESAExpress) (string, error) {
-	body, err := json.Marshal(mpesaExpress)
+// Simulation requests user device for payment
+func (s Service) Simulation(express Express) (string, error) {
+	body, err := json.Marshal(express)
 	if err != nil {
 		return "", nil
 	}
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -86,17 +85,17 @@ func (s Service) MPESAExpressSimulation(mpesaExpress MPESAExpress) (string, erro
 	headers["cache-control"] = "no-cache"
 
 	url := s.baseURL() + "mpesa/stkpush/v1/processrequest"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
-// STKPushTransactionStatus gets a status
-func (s Service) MPESAExpressTransactionStatus(mpesaExpress MPESAExpress) (string, error) {
-	body, err := json.Marshal(mpesaExpress)
+// TransactionStatus gets status of a transaction
+func (s Service) TransactionStatus(express Express) (string, error) {
+	body, err := json.Marshal(express)
 	if err != nil {
 		return "", nil
 	}
 
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -106,17 +105,17 @@ func (s Service) MPESAExpressTransactionStatus(mpesaExpress MPESAExpress) (strin
 	headers["Authorization"] = "Bearer " + auth
 
 	url := s.baseURL() + "mpesa/stkpushquery/v1/query"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
 // C2BRegisterURL requests
-func (s Service) C2BRegisterURL(c2BRegisterURL C2BRegisterURL) (string, error) {
-	body, err := json.Marshal(c2BRegisterURL)
+func (s Service) C2BRegisterURL(c2bRegisterURL C2BRegisterURL) (string, error) {
+	body, err := json.Marshal(c2bRegisterURL)
 	if err != nil {
 		return "", err
 	}
 
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -127,7 +126,7 @@ func (s Service) C2BRegisterURL(c2BRegisterURL C2BRegisterURL) (string, error) {
 	headers["Cache-Control"] = "no-cache"
 
 	url := s.baseURL() + "mpesa/c2b/v1/registerurl"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
 // C2BSimulation sends a new request
@@ -137,7 +136,7 @@ func (s Service) C2BSimulation(c2b C2B) (string, error) {
 		return "", err
 	}
 
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -148,7 +147,7 @@ func (s Service) C2BSimulation(c2b C2B) (string, error) {
 	headers["cache-control"] = "no-cache"
 
 	url := s.baseURL() + "mpesa/c2b/v1/simulate"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
 // B2CRequest sends a new request
@@ -158,7 +157,7 @@ func (s Service) B2CRequest(b2c B2C) (string, error) {
 		return "", err
 	}
 
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -169,7 +168,7 @@ func (s Service) B2CRequest(b2c B2C) (string, error) {
 	headers["cache-control"] = "no-cache"
 
 	url := s.baseURL() + "mpesa/b2c/v1/paymentrequest"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
 // B2BRequest sends a new request
@@ -178,7 +177,7 @@ func (s Service) B2BRequest(b2b B2B) (string, error) {
 	if err != nil {
 		return "", nil
 	}
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -189,7 +188,7 @@ func (s Service) B2BRequest(b2b B2B) (string, error) {
 	headers["cache-control"] = "no-cache"
 
 	url := s.baseURL() + "mpesa/b2b/v1/paymentrequest"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
 // Reversal requests a reversal?
@@ -199,7 +198,7 @@ func (s Service) Reversal(reversal Reversal) (string, error) {
 		return "", err
 	}
 
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -209,13 +208,13 @@ func (s Service) Reversal(reversal Reversal) (string, error) {
 	headers["Authorization"] = "Bearer " + auth
 	headers["cache-control"] = "no-cache"
 
-	url := s.baseURL() + "safaricom/reversal/v1/request"
-	return s.newStringRequest(url, body, headers)
+	url := s.baseURL() + "safaricom/reversal/v1/request" //TODO :: CONFIRM THIS URL/ENDPOINT???
+	return s.newReq(url, body, headers)
 }
 
 // BalanceInquiry sends a balance inquiry
 func (s Service) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
-	auth, err := s.authenticate()
+	auth, err := s.auth()
 	if err != nil {
 		return "", nil
 	}
@@ -232,10 +231,10 @@ func (s Service) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
 	url := s.baseURL() + "mpesa/accountbalance/v1/query"
-	return s.newStringRequest(url, body, headers)
+	return s.newReq(url, body, headers)
 }
 
-func (s Service) newStringRequest(url string, body []byte, headers map[string]string) (string, error) {
+func (s Service) newReq(url string, body []byte, headers map[string]string) (string, error) {
 	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {
 		return "", nil
@@ -245,7 +244,7 @@ func (s Service) newStringRequest(url string, body []byte, headers map[string]st
 		request.Header.Set(key, value)
 	}
 
-	client := &http.Client{Timeout: 10 * time.Second}
+	client := &http.Client{Timeout: 60 * time.Second}
 	res, err := client.Do(request)
 	if res != nil {
 		defer res.Body.Close()
@@ -259,7 +258,6 @@ func (s Service) newStringRequest(url string, body []byte, headers map[string]st
 		return "", err
 	}
 
-	log.Println("Response received")
 	return string(stringBody), nil
 }
 
