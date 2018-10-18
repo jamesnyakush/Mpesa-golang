@@ -64,7 +64,6 @@ func (s Service) auth() (string, error) {
 	}
 
 	accessToken := authResponse.AccessToken
-	fmt.Println("MPESA TOKEN ", accessToken)
 	return accessToken, nil
 }
 
