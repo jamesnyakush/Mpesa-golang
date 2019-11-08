@@ -64,7 +64,6 @@ func (s Service) auth() (string, error) {
 	}
 
 	accessToken := authResponse.AccessToken
-	fmt.Println("MPESA TOKEN ", accessToken)
 	return accessToken, nil
 }
 
@@ -231,6 +230,27 @@ func (s Service) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	headers["postman-token"] = "2aa448be-7d56-a796-065f-b378ede8b136"
 
 	url := s.baseURL() + "mpesa/accountbalance/v1/query"
+	return s.newReq(url, body, headers)
+}
+
+// BalanceInquiry sends a balance inquiry
+func (s Service) PullTransactions(pull Pull) (string, error) {
+	auth, err := s.auth()
+	if err != nil {
+		return "", nil
+	}
+
+	body, err := json.Marshal(pull)
+	if err != nil {
+		return "", err
+	}
+
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
+	headers["cache-control"] = "no-cache"
+
+	url := s.baseURL() + "pulltransactions/v1/query"
 	return s.newReq(url, body, headers)
 }
 
