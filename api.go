@@ -233,6 +233,27 @@ func (s Service) BalanceInquiry(balanceInquiry BalanceInquiry) (string, error) {
 	return s.newReq(url, body, headers)
 }
 
+// BalanceInquiry sends a balance inquiry
+func (s Service) PullTransactions(pull Pull) (string, error) {
+	auth, err := s.auth()
+	if err != nil {
+		return "", nil
+	}
+
+	body, err := json.Marshal(pull)
+	if err != nil {
+		return "", err
+	}
+
+	headers := make(map[string]string)
+	headers["Content-Type"] = "application/json"
+	headers["Authorization"] = "Bearer " + auth
+	headers["cache-control"] = "no-cache"
+
+	url := s.baseURL() + "pulltransactions/v1/query"
+	return s.newReq(url, body, headers)
+}
+
 func (s Service) newReq(url string, body []byte, headers map[string]string) (string, error) {
 	request, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(body))
 	if err != nil {

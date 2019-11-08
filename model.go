@@ -85,6 +85,14 @@ type BalanceInquiry struct {
 	ResultURL          string
 }
 
+// Pull is a model
+type Pull struct {
+	ShortCode  string
+	StartDate  string
+	EndDate    string
+	PageNumber string
+}
+
 // RegisterURL is a model
 type C2BRegisterURL struct {
 	ShortCode       string
